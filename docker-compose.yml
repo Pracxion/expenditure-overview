@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    env_file:
+      - ./frontend/.env
+    volumes:
+      - ./frontend:/var/www/html/app
+      - "/var/www/html/app/node_modules"
+    networks:
+      - nginx-network
+
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/home/myuser/code
+    networks:
+      - nginx-network
+
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 80:80
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - nginx-network
+
+networks:
+  nginx-network:
+    driver: bridge

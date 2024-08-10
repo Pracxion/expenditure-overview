@@ -1,0 +1,16 @@
+
+### get base fast api endpoint
+GET http://127.0.0.1:80/api
+
+### 
+GET http://127.0.0.1:80/
+
+
+### get base fast api endpoint
+# POST http://127.0.0.1:80/
+# content-type: application/json
+
+# {
+#   "title": "Learn HTTP files",
+#   "completed": false
+# }
