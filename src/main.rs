@@ -19,10 +19,6 @@ async fn main() {
     info!("Initializing Router ..");
 
     let assets_path = std::env::current_dir().unwrap();
-    println!(
-        "{}",
-        format!("{}/templates/assets", assets_path.to_str().unwrap())
-    );
     let router = Router::new().route("/", get(index)).nest_service(
         "/assets",
         ServeDir::new(format!(
