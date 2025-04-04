@@ -10,7 +10,7 @@ pub async fn index() -> impl IntoResponse {
 }
 
 #[derive(Template)]
-#[template(path = "index.html")]
+#[template(path = "src/index.html")]
 struct IndexTemplate;
 
 struct HtmlTemplate<T>(T);

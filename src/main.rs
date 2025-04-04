@@ -1,5 +1,6 @@
 use axum::{Router, routing::get};
 use templates::index::index;
+use tower_http::services::ServeDir;
 use tracing::info;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
@@ -17,7 +18,18 @@ async fn main() {
 
     info!("Initializing Router ..");
 
-    let router = Router::new().route("/", get(index));
+    let assets_path = std::env::current_dir().unwrap();
+    println!(
+        "{}",
+        format!("{}/templates/assets", assets_path.to_str().unwrap())
+    );
+    let router = Router::new().route("/", get(index)).nest_service(
+        "/assets",
+        ServeDir::new(format!(
+            "{}/templates/assets",
+            assets_path.to_str().unwrap()
+        )),
+    );
     let port = 8000_u16;
     let addr = std::net::SocketAddr::from(([0, 0, 0, 0], port));
 
