@@ -26,9 +26,8 @@ lint:
 organize:
     rustywind --write .
 
-[working-directory: 'templates']
 organize-all:
-    @organize
-    @format-templates
-    @format-rust
-    @lint
+    just organize
+    just format-templates
+    just format-rust
+    just lint
