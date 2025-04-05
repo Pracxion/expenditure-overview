@@ -1,24 +1,9 @@
-use std::collections::HashMap;
-
-use axum::{extract::Multipart,
-           http::StatusCode,
-           response::IntoResponse};
-use serde_json::Value;
+use axum::{extract::Multipart, http::StatusCode, response::IntoResponse};
 use tracing::info;
-
-use crate::database::csv_schema::SchemaDefinition;
 
 const MAX_PREVIEW_LENGTH: usize = 20;
 
 pub async fn upload_csv(mut multipart: Multipart) -> impl IntoResponse {
-    let schema_path = "database/csv_schema.json";
-    let schema = match SchemaDefinition::load_from_file(schema_path) {
-        Ok(schema) => schema,
-        Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, format!("Failed to load schema: {}", e))
-    };
-
-    info!("Successfully loaded schema from {}", schema_path);
-
     let mut processed_files = 0;
     let mut failed_files = 0;
 
@@ -46,8 +31,7 @@ pub async fn upload_csv(mut multipart: Multipart) -> impl IntoResponse {
 
         match schema.process_csv(data.to_vec()) {
             Ok(processed_data) => {
-                log_csv_lines(processed_data, file_name);
-
+                log_csv_data(&processed_data, &file_name);
                 processed_files += 1;
             }
             Err(e) => {
@@ -64,18 +48,18 @@ pub async fn upload_csv(mut multipart: Multipart) -> impl IntoResponse {
     if failed_files > 0 {
         return (
             StatusCode::PARTIAL_CONTENT,
-            format!("Processed {} files successfully. Failed to process {} files.", processed_files, failed_files)
+            format!("Processed {} files successfully. Failed to process {} files.", processed_files, failed_files),
         );
     }
 
     return (StatusCode::OK, format!("Successfully processed {} CSV files", processed_files));
 }
 
-fn log_csv_lines(processed_data: Vec<HashMap<String, Value>>, file_name: String) {
-    let total_entries = processed_data.len();
-    info!("Successfully processed {}. Total entries: {}", file_name, total_entries);
+fn log_csv_data(processed_data: &ProcessedCsvData, file_name: &str) {
+    let total_entries = processed_data.data.len();
+    info!("Successfully processed {} with schema key: {}. Total entries: {}", file_name, processed_data.schema_key, total_entries);
 
-    for (i, entry) in processed_data.iter().take(MAX_PREVIEW_LENGTH).enumerate() {
+    for (i, entry) in processed_data.data.iter().take(MAX_PREVIEW_LENGTH).enumerate() {
         let entry_json = serde_json::to_string(entry).unwrap_or_default();
         info!("File: {} - Line {}: {}", file_name, i, entry_json);
     }
