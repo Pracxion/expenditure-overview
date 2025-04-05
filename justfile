@@ -1,17 +1,27 @@
 default:
   just --list
-  
+
 run:
   cargo run
+
+watch:
+  cargo watch -x run
+
+format-rust:
+  cargo +nightly fmt
 
 [working-directory: 'templates']
 asset-serving:
     pnpm dlx @tailwindcss/cli -i styles/tailwind.css -o assets/main.css --watch
 
 [working-directory: 'templates']
-format:
+format-templates:
     pnpm format
 
 [working-directory: 'templates']
 lint:
     pnpm lint
+
+[working-directory: 'templates']
+organize:
+    rustywind --write .
