@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+@layer components {
+    .link {
+        text-decoration: none;
+        color: var(--color-indigo-300)
+    }
+
+    .link:hover {
+        text-decoration: underline;
+        color: var(--color-indigo-500)
+    }
+}
