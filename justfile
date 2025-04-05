@@ -5,7 +5,7 @@ run:
   cargo run
 
 watch:
-  cargo watch -x run
+  RUST_LOG=info cargo watch -x run
 
 format-rust:
   cargo +nightly fmt

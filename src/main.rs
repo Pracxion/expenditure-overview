@@ -1,19 +1,22 @@
-use axum::{Router,
-           routing::get};
+use axum::{
+    Router,
+    extract::DefaultBodyLimit,
+    routing::{get, post},
+};
 use config::env_config::Config;
-use database::maintenance::{connection_pool,
-                            initialize_database};
-use templates::{app::app,
-                index::index};
+use database::maintenance::{connection_pool, initialize_database};
+use templates::{app::app, index::index};
 use tower_http::services::ServeDir;
 use tracing::info;
-use tracing_subscriber::{fmt::init,
-                         layer::SubscriberExt,
-                         util::SubscriberInitExt};
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+use upload::upload_csv::upload_csv;
 
 mod config;
 mod database;
 mod templates;
+mod upload;
+
+const BODY_SIZE_LIMIT: usize = 32 * 1024 * 1024;
 
 #[tokio::main]
 async fn main() {
@@ -34,8 +37,11 @@ async fn main() {
     let router = Router::new()
         .route("/", get(index))
         .route("/app", get(app))
+        .route("/upload-csv", post(upload_csv))
         .nest_service("/assets", ServeDir::new(format!("{}/templates/assets", assets_path.to_str().unwrap())))
-        .with_state(connection);
+        .with_state(connection)
+        .layer(DefaultBodyLimit::max(BODY_SIZE_LIMIT))
+        .layer(tower_http::limit::RequestBodyLimitLayer::new(BODY_SIZE_LIMIT));
 
     let listener = tokio::net::TcpListener::bind(config.server_address()).await.unwrap();
     axum::serve(listener, router.into_make_service()).await.unwrap();
