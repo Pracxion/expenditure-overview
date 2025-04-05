@@ -7,3 +7,13 @@ if ! command -v cargo &> /dev/null; then
 else
     echo "Cargo is already installed."
 fi
+
+if ! command -v sqlx &> /dev/null; then
+    echo "Sqlx not found. Installing Sqlx .."
+    cargo install sqlx-cli
+else
+    echo "Sqlx is already installed."
+fi 
+
+sqlx db create
+sqlx migrate run
