@@ -13,7 +13,6 @@ use upload::upload_csv::upload_csv;
 
 mod config;
 mod database;
-mod enumeration;
 mod templates;
 mod upload;
 

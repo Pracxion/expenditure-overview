@@ -15,7 +15,8 @@ pub async fn upload_csv(mut multipart: Multipart) -> impl IntoResponse {
         let file_name = field.file_name().unwrap_or("unnamed").to_string();
 
         if file_name.ends_with(".csv") == false {
-            failed_files += 1
+            failed_files += 1;
+            continue;
         }
 
         let data = match field.bytes().await {
@@ -29,7 +30,7 @@ pub async fn upload_csv(mut multipart: Multipart) -> impl IntoResponse {
 
         info!("Processing file: {} ({} bytes) (name: {})", file_name, data.len(), form_name);
 
-        match schema.process_csv(data.to_vec()) {
+        match processor.process_csv(data.to_vec()) {
             Ok(processed_data) => {
                 log_csv_data(&processed_data, &file_name);
                 processed_files += 1;
