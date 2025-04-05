@@ -1,0 +1,12 @@
+<form hx-encoding='multipart/form-data' hx-post='/upload-csv' class="flex gap-x-2 w-full">
+    <button class="w-24 py-2 rounded-lg bg-indigo-700 font-bold text-white hover:bg-indigo-600 transition-colors">
+        Upload CSV
+    </button>
+    <div class="dropzone-container relative">
+        <input type='file' name='csv_file' id="file-upload"
+            class="dropzone-input opacity-0 absolute inset-0 w-full h-full cursor-pointer" accept=".csv">
+        <div class="dropzone-placeholder flex items-center justify-center h-full">
+            <p class="text-gray-400">Drop your CSV file here or click to browse</p>
+        </div>
+    </div>
+</form>

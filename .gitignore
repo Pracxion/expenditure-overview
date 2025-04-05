@@ -2,7 +2,7 @@
 .DS_Store
 
 # templates - pnpm - tailwindcss
-/templates/assets
+/templates/assets/main.css
 /templates/node_modules
 
 # database

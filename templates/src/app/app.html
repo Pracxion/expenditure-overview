@@ -2,14 +2,13 @@
 
 {% block title %}Expenditure Overview{% endblock %}
 
+{% block head %}
+<script src="/assets/dropzone.js"></script>
+{% endblock %}
+
 {% block content %}
-<h1 class="font-bold text-indigo-500">App</h1>
-<form hx-encoding='multipart/form-data' hx-post='/upload-csv'
-    _='on htmx:xhr:progress(loaded, total) set #progress.value to (loaded/total)*100'>
-    <input type='file' name='file' class="bg-amber-300">
-    <button class="w-24 h-6 rounded-full bg-fuchsia-600">
-        Upload
-    </button>
-    <progress id='progress' value='0' max='100' class="bg-amber-900"></progress>
-</form>
+<section class="w-3/4 h-auto mx-auto mt-2">
+    {% include "dropzone.html" %}
+</section>
+
 {% endblock %}

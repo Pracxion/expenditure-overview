@@ -1,14 +1,16 @@
-use axum::{
-    Router,
-    extract::DefaultBodyLimit,
-    routing::{get, post},
-};
+use axum::{Router,
+           extract::DefaultBodyLimit,
+           routing::{get,
+                     post}};
 use config::env_config::Config;
-use database::maintenance::{connection_pool, initialize_database};
-use templates::{app::app, index::index};
+use database::maintenance::{connection_pool,
+                            initialize_database};
+use templates::{app::app,
+                index::index};
 use tower_http::services::ServeDir;
 use tracing::info;
-use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+use tracing_subscriber::{layer::SubscriberExt,
+                         util::SubscriberInitExt};
 use upload::upload_csv::upload_csv;
 
 mod config;

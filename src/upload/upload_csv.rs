@@ -1,6 +1,9 @@
-use crate::database::csv_schema::SchemaDefinition;
-use axum::{extract::Multipart, http::StatusCode, response::IntoResponse};
+use axum::{extract::Multipart,
+           http::StatusCode,
+           response::IntoResponse};
 use tracing::info;
+
+use crate::database::csv_schema::SchemaDefinition;
 
 const MAX_PREVIEW_LENGTH: usize = 20;
 
@@ -9,7 +12,7 @@ pub async fn upload_csv(mut multipart: Multipart) -> impl IntoResponse {
     let schema_path = "database/csv_schema.json"; // Updated path to the schema file
     let schema = match SchemaDefinition::load_from_file(schema_path) {
         Ok(schema) => schema,
-        Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, format!("Failed to load schema: {}", e)),
+        Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, format!("Failed to load schema: {}", e))
     };
 
     info!("Successfully loaded schema from {}", schema_path);
@@ -61,9 +64,9 @@ pub async fn upload_csv(mut multipart: Multipart) -> impl IntoResponse {
 
                     return (StatusCode::OK, "Successfully processed CSV data".to_string());
                 }
-                Err(e) => return (StatusCode::BAD_REQUEST, format!("Failed to process CSV: {}", e)),
+                Err(e) => return (StatusCode::BAD_REQUEST, format!("Failed to process CSV: {}", e))
             }
         }
-        None => return (StatusCode::BAD_REQUEST, "No CSV data provided".to_string()),
+        None => return (StatusCode::BAD_REQUEST, "No CSV data provided".to_string())
     }
 }
