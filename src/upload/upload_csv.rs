@@ -1,6 +1,8 @@
 use std::collections::HashMap;
 
-use axum::{extract::Multipart, http::StatusCode, response::IntoResponse};
+use axum::{extract::Multipart,
+           http::StatusCode,
+           response::IntoResponse};
 use serde_json::Value;
 use tracing::info;
 
@@ -12,7 +14,7 @@ pub async fn upload_csv(mut multipart: Multipart) -> impl IntoResponse {
     let schema_path = "database/csv_schema.json";
     let schema = match SchemaDefinition::load_from_file(schema_path) {
         Ok(schema) => schema,
-        Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, format!("Failed to load schema: {}", e)),
+        Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, format!("Failed to load schema: {}", e))
     };
 
     info!("Successfully loaded schema from {}", schema_path);
@@ -62,7 +64,7 @@ pub async fn upload_csv(mut multipart: Multipart) -> impl IntoResponse {
     if failed_files > 0 {
         return (
             StatusCode::PARTIAL_CONTENT,
-            format!("Processed {} files successfully. Failed to process {} files.", processed_files, failed_files),
+            format!("Processed {} files successfully. Failed to process {} files.", processed_files, failed_files)
         );
     }
 

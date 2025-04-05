@@ -25,3 +25,10 @@ lint:
 [working-directory: 'templates']
 organize:
     rustywind --write .
+
+[working-directory: 'templates']
+organize-all:
+    @organize
+    @format-templates
+    @format-rust
+    @lint
