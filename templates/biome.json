@@ -1,0 +1,12 @@
+{
+	"files": {
+		"include": ["src/**/*.js", "src/**/*.html", "src/**/*.css"]
+	},
+	"formatter": {
+		"enabled": true,
+		"attributePosition": "auto",
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineWidth": 200
+	}
+}
