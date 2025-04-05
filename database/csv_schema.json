@@ -4,31 +4,6 @@
       "name": "id",
       "data_type": "string",
       "required": true
-    },
-    {
-      "name": "date",
-      "data_type": "string",
-      "required": false
-    },
-    {
-      "name": "description",
-      "data_type": "string",
-      "required": false
-    },
-    {
-      "name": "amount",
-      "data_type": "float",
-      "required": false
-    },
-    {
-      "name": "category",
-      "data_type": "string",
-      "required": false
-    },
-    {
-      "name": "is_income",
-      "data_type": "boolean",
-      "required": false
     }
   ]
 }
